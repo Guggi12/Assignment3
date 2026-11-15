@@ -58,8 +58,40 @@ section{padding:56px 0}.tint{background:var(--soft)}.sky{background:var(--sky)}
 .btn:hover{transform:translateY(-1px)}.btn:active{transform:none}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-hover);color:#fff}
 .btn-accent{background:var(--orange);color:#270F8F}.btn-accent:hover{background:#FFA62F;color:#270F8F}
-.btn-outline{background:var(--surface);color:var(--head);border-color:var(--head)}.btn-outline:hover{background:var(--sky);color:var(--head)}
-.dark .btn-outline{background:transparent;color:#fff;border-color:#fff}.dark .btn-outline:hover{background:rgba(255,255,255,.15);color:#fff}
+/* pulsante con bordo: colori presi dai token del tema */
+.btn-outline {
+  background: var(--surface);
+  color: var(--head);
+  border-color: var(--head);
+}
+.btn-outline:hover {
+  background: var(--sky);
+  color: var(--head);
+}
+
+/* nelle sezioni scure (hero, fascia CTA, footer) il pulsante è bianco su sfondo scuro */
+.dark .btn-outline {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+.dark .btn-outline:hover {
+  background: rgba(255, 255, 255, .15);
+  color: #fff;
+}
+
+/* ...ma dentro una scheda (es. «In scadenza» nella hero della home) il fondo è quello
+   del tema, quindi il pulsante deve seguire i token del tema e non il bianco fisso.
+   Nel tema scuro resta com'era (bianco su scheda scura). */
+:root:not([data-theme=dark]) .dark .card .btn-outline {
+  background: var(--surface);
+  color: var(--head);
+  border-color: var(--head);
+}
+:root:not([data-theme=dark]) .dark .card .btn-outline:hover {
+  background: var(--sky);
+  color: var(--head);
+}
 .btn-lg{min-height:54px;padding:12px 30px;font-size:1.1rem}.btn-sm{min-height:38px;padding:6px 16px;font-size:.92rem}
 .btn[disabled],.btn[aria-disabled=true]{opacity:.55;cursor:not-allowed;transform:none}
 .btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
@@ -85,7 +117,16 @@ section{padding:56px 0}.tint{background:var(--soft)}.sky{background:var(--sky)}
 .stat strong{display:block;font:700 2rem/1.1 Lexend,sans-serif;color:var(--head)}.stat span{color:var(--muted);font-size:.95rem}
 /* cards */
 .grid{display:grid;gap:24px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
+.card {
+  background: var(--surface);
+  color: var(--ink); /* il testo non eredita il bianco delle sezioni .dark / .hero */
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--sh);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 .card.pad{padding:24px}
 .pcard:hover{box-shadow:var(--sh-hover)}
 .pcard .thumb{aspect-ratio:5/3;width:100%;object-fit:cover;display:block;background:var(--soft)}
