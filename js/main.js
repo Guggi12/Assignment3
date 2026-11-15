@@ -5,7 +5,9 @@
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const eur = n => String(Math.round(Number(n))).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '\u00a0€';
-  const ic = n => `<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+  /* nomi delle icone: le icone sono decorative (aria-hidden) ma portano comunque un aria-label, come nelle pagine HTML */
+  const ICL = { check: 'Spunta', arrow: 'Freccia', search: 'Lente di ricerca', share: 'Condividi', clock: 'Orologio', users: 'Persone', alert: 'Attenzione', info: 'Informazione', heart: 'Cuore', shield: 'Scudo', mail: 'Email', phone: 'Telefono', user: 'Utente', bulb: 'Lampadina', pin: 'Luogo', book: 'Libro' };
+  const ic = n => `<svg class="ic" aria-hidden="true" aria-label="${ICL[n] || n}"><use href="#i-${n}"/></svg>`;
   const pct = p => Math.round(p.raccolto / p.obiettivo * 100);
   const find = id => P.find(p => p.id === id);
   const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -53,7 +55,7 @@
 
   /* ---------- sessione simulata (Area personale) ---------- */
   const user = sess.get();
-  const svg = (d, cls) => `<svg class="ic${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+  const svg = (d, cls, label) => `<svg class="ic${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true" aria-label="${label}">${d}</svg>`;
   const ICON = {
     user: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
     caret: '<path d="m6 9 6 6 6-6"/>',
@@ -78,7 +80,7 @@
     const sw = document.createElement('button');
     sw.type = 'button'; sw.id = 'themeSw'; sw.className = 'tswitch'; sw.setAttribute('role', 'switch');
     sw.setAttribute('aria-checked', curTheme() === 'dark');
-    sw.innerHTML = `<span>Tema scuro</span><span class="ts-track" aria-hidden="true"><span class="ts-knob">${svg(ICON.sun, 'i-sun')}${svg(ICON.moon, 'i-moon')}</span></span>`;
+    sw.innerHTML = `<span>Tema scuro</span><span class="ts-track" aria-hidden="true"><span class="ts-knob">${svg(ICON.sun, 'i-sun', 'Sole')}${svg(ICON.moon, 'i-moon', 'Luna')}</span></span>`;
     sw.addEventListener('click', () => setTheme(curTheme() === 'dark' ? 'light' : 'dark', true));
     hdrArea.parentNode.insertBefore(sw, hdrArea);
   }
@@ -87,11 +89,11 @@
   const guestBtn = () => { const a = document.createElement('a'); a.className = 'btn btn-outline btn-sm'; a.id = 'areaBtn'; a.href = PRE + 'accedi.html'; a.innerHTML = ic('user') + 'Area personale'; return a; };
   function userMenu(u) {
     const here = page === 'area', w = document.createElement('div'); w.className = 'usermenu';
-    w.innerHTML = `<button type="button" class="btn btn-outline btn-sm um-btn" id="areaBtn" aria-expanded="false" aria-controls="umenu" aria-label="Ciao, ${esc(u.nome)}: apri il menu dell'account">${svg(ICON.user)}Ciao, ${esc(u.nome)}${svg(ICON.caret, 'um-caret')}</button>
+    w.innerHTML = `<button type="button" class="btn btn-outline btn-sm um-btn" id="areaBtn" aria-expanded="false" aria-controls="umenu" aria-label="Ciao, ${esc(u.nome)}: apri il menu dell'account">${svg(ICON.user, '', 'Utente')}Ciao, ${esc(u.nome)}${svg(ICON.caret, 'um-caret', 'Freccia verso il basso')}</button>
       <div class="um-panel" id="umenu" hidden>
         <div class="um-id"><strong>${esc(u.completo || u.nome)}</strong><span>${esc(u.email)}</span></div>
-        <a class="um-item" id="umArea" href="${PRE}area-personale.html"${here ? ' aria-current="page"' : ''}>${svg(ICON.user)}<span>Vai all'area personale</span>${here ? '<span class="um-here">Sei qui</span>' : ''}</a>
-        <button type="button" class="um-item um-out" id="umOut">${svg(ICON.out)}<span>Esci</span></button>
+        <a class="um-item" id="umArea" href="${PRE}area-personale.html"${here ? ' aria-current="page"' : ''}>${svg(ICON.user, '', 'Utente')}<span>Vai all'area personale</span>${here ? '<span class="um-here">Sei qui</span>' : ''}</a>
+        <button type="button" class="um-item um-out" id="umOut">${svg(ICON.out, '', 'Uscita')}<span>Esci</span></button>
       </div>`;
     const btn = $('.um-btn', w), panel = $('#umenu', w);
     const close = back => { panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); if (back) btn.focus(); };

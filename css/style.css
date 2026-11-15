@@ -36,6 +36,8 @@ p{margin:0 0 1em}.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}.mute
 a{color:var(--link);text-decoration:underline;text-underline-offset:3px}a:hover{color:var(--head);text-decoration-thickness:2px}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
 .dark{--focus:#FFD27A}
+/* la scheda bianca dentro una sezione scura non eredita il giallo: sul bianco avrebbe contrasto 1,5:1 */
+.dark .card{--focus:#2145F0}:root[data-theme=dark] .dark .card{--focus:#FFD27A}
 img,svg{max-width:100%}
 .container{width:100%;max-width:1160px;margin:0 auto;padding:0 32px}
 .narrow{max-width:760px}
@@ -44,7 +46,7 @@ section{padding:56px 0}.tint{background:var(--soft)}.sky{background:var(--sky)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap}
 .ic{width:1.1em;height:1.1em;vertical-align:-.2em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* banner prototipo */
-.proto{background:var(--proto-bg);color:#fff;font-size:.88rem;padding:6px 0;text-align:center}.proto a{color:#FFD27A}
+.proto{background:#1B1340;color:#fff;font-size:.88rem;padding:6px 0;text-align:center}.proto a{color:#FFD27A}
 /* header */
 .site-header{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
 .hdr{display:flex;align-items:center;gap:14px;min-height:76px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
@@ -58,40 +60,10 @@ section{padding:56px 0}.tint{background:var(--soft)}.sky{background:var(--sky)}
 .btn:hover{transform:translateY(-1px)}.btn:active{transform:none}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-hover);color:#fff}
 .btn-accent{background:var(--orange);color:#270F8F}.btn-accent:hover{background:#FFA62F;color:#270F8F}
-/* pulsante con bordo: colori presi dai token del tema */
-.btn-outline {
-  background: var(--surface);
-  color: var(--head);
-  border-color: var(--head);
-}
-.btn-outline:hover {
-  background: var(--sky);
-  color: var(--head);
-}
-
-/* nelle sezioni scure (hero, fascia CTA, footer) il pulsante è bianco su sfondo scuro */
-.dark .btn-outline {
-  background: transparent;
-  color: #fff;
-  border-color: #fff;
-}
-.dark .btn-outline:hover {
-  background: rgba(255, 255, 255, .15);
-  color: #fff;
-}
-
-/* ...ma dentro una scheda (es. «In scadenza» nella hero della home) il fondo è quello
-   del tema, quindi il pulsante deve seguire i token del tema e non il bianco fisso.
-   Nel tema scuro resta com'era (bianco su scheda scura). */
-:root:not([data-theme=dark]) .dark .card .btn-outline {
-  background: var(--surface);
-  color: var(--head);
-  border-color: var(--head);
-}
-:root:not([data-theme=dark]) .dark .card .btn-outline:hover {
-  background: var(--sky);
-  color: var(--head);
-}
+.btn-outline{background:var(--surface);color:var(--head);border-color:var(--head)}.btn-outline:hover{background:var(--sky);color:var(--head)}
+.dark .btn-outline{background:transparent;color:#fff;border-color:#fff}.dark .btn-outline:hover{background:rgba(255,255,255,.15);color:#fff}
+.dark .card{color:var(--ink)}
+.dark .card .btn-outline{background:var(--surface);color:var(--head);border-color:var(--head)}.dark .card .btn-outline:hover{background:var(--sky);color:var(--head)}
 .btn-lg{min-height:54px;padding:12px 30px;font-size:1.1rem}.btn-sm{min-height:38px;padding:6px 16px;font-size:.92rem}
 .btn[disabled],.btn[aria-disabled=true]{opacity:.55;cursor:not-allowed;transform:none}
 .btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
@@ -101,7 +73,7 @@ section{padding:56px 0}.tint{background:var(--soft)}.sky{background:var(--sky)}
 .crumbs li+li::before{content:"›";margin-right:6px;color:var(--muted)}.crumbs [aria-current]{color:var(--muted);text-decoration:none}
 .pagehead{padding:20px 0 32px}.pagehead h1{margin-bottom:.3em}
 /* hero */
-.hero{background:var(--brand);color:#fff;padding:64px 0 72px;position:relative;overflow:hidden}
+.hero{background:#270F8F;color:#fff;padding:64px 0 72px;position:relative;overflow:hidden}
 .hero h1{color:#fff;font-size:2.9rem;max-width:18ch}.hero .lead{color:#E4E0FF}
 .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
 .eyebrow{display:inline-block;font-family:inherit;line-height:1.6;font-weight:700;font-size:.9rem;letter-spacing:.04em;text-transform:uppercase;color:#FFD27A;margin-bottom:12px}
@@ -117,16 +89,7 @@ section{padding:56px 0}.tint{background:var(--soft)}.sky{background:var(--sky)}
 .stat strong{display:block;font:700 2rem/1.1 Lexend,sans-serif;color:var(--head)}.stat span{color:var(--muted);font-size:.95rem}
 /* cards */
 .grid{display:grid;gap:24px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
-.card {
-  background: var(--surface);
-  color: var(--ink); /* il testo non eredita il bianco delle sezioni .dark / .hero */
-  border: 1px solid var(--line);
-  border-radius: var(--r);
-  box-shadow: var(--sh);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
 .card.pad{padding:24px}
 .pcard:hover{box-shadow:var(--sh-hover)}
 .pcard .thumb{aspect-ratio:5/3;width:100%;object-fit:cover;display:block;background:var(--soft)}
@@ -140,7 +103,7 @@ section{padding:56px 0}.tint{background:var(--soft)}.sky{background:var(--sky)}
 .meta{display:flex;justify-content:space-between;gap:12px;font-size:.93rem;color:var(--muted);flex-wrap:wrap}.meta strong{color:var(--ink)}
 .steps4{counter-reset:s}.steps4 .card{padding:24px}.num{width:44px;height:44px;border-radius:50%;background:var(--sky);color:var(--head);font:700 1.2rem Lexend,sans-serif;display:grid;place-items:center;margin-bottom:14px}
 .benefit .ic{width:30px;height:30px;color:var(--link);margin-bottom:10px}
-.ctaband{background:var(--brand);color:#fff;border-radius:20px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:32px}.ctaband h2{color:#fff;font-size:1.4rem}.ctaband p{color:#E4E0FF}
+.ctaband{background:#270F8F;color:#fff;border-radius:20px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:32px}.ctaband h2{color:#fff;font-size:1.4rem}.ctaband p{color:#E4E0FF}
 .checks{list-style:none;padding:0;margin:0 0 1em}.checks li{display:flex;gap:10px;margin-bottom:8px}.checks .ic{color:var(--ok);margin-top:.3em}
 ul.plain{padding-left:1.2em;margin:0 0 1em}ul.plain li{margin-bottom:6px}
 /* toolbar filtri */
@@ -211,7 +174,7 @@ dialog{border:0;border-radius:18px;padding:28px;max-width:560px;width:92%;box-sh
 .bar.lg{height:16px}
 mark{background:#FFE9A8;color:#1B1340;padding:0 2px;border-radius:3px}
 /* footer */
-.footer{background:var(--brand);color:#E4E0FF;padding:56px 0 24px;margin-top:auto;flex:none}
+.footer{background:#270F8F;color:#E4E0FF;padding:56px 0 24px;margin-top:auto;flex:none}
 .footer a{color:#fff}.footer h2{color:#fff;font-size:1rem;text-transform:uppercase;letter-spacing:.06em}.footer ul{list-style:none;padding:0;margin:0}.footer li{margin-bottom:8px}
 .fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:36px}.fgrid img{height:46px;margin-bottom:14px}
 .fbottom{border-top:1px solid rgba(255,255,255,.25);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap}.fbottom img{height:28px;width:auto}
@@ -272,3 +235,7 @@ a.newtile:hover{background:var(--sky);border-color:var(--head);color:var(--head)
 /* testi inseriti dall'utente (titoli, descrizioni, messaggi): le parole lunghe vanno a capo invece di uscire dal riquadro */
 .card{min-width:0}
 .card h2,.card h3,.card p,details>div p,.sum td,.inline-note p,.callout p{overflow-wrap:anywhere}
+
+/* sfondi scuri nel tema scuro (stessi valori di --brand e --proto-bg, scritti per esteso) */
+:root[data-theme=dark] .proto{background:#070418}
+:root[data-theme=dark] .hero,:root[data-theme=dark] .ctaband,:root[data-theme=dark] .footer{background:#1E0E6E}
